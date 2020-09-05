@@ -35,6 +35,12 @@ const renderListItem = (listLength, itemData) => (
 	</View>
 );
 
+let listContainerStyle = styles.listContainer;
+
+if (Dimensions.get('window').width < 350) {
+	listContainerStyle = styles.listContainerBig;
+}
+
 const GameScreen = (props) => {
 	const inititalGuess = generateRandomBetween(1, 100, props.userChoice);
 	const [currentGuess, setCurrentGuess] = useState(inititalGuess);
@@ -93,7 +99,7 @@ const GameScreen = (props) => {
 					<Ionicons name='md-add' size={24} color='white' />
 				</MainButton>
 			</Card>
-			<View style={styles.listContainer}>
+			<View style={listContainerStyle}>
 				{/* <ScrollView contentContainerStyle={styles.list}>
 					{pastGuesses.map((guess, index) =>
 						renderListItem(guess, pastGuesses.length - index)
@@ -133,6 +139,10 @@ const styles = StyleSheet.create({
 		// on android, parent of scrollview MUST use flex 1
 		flex: 1,
 		width: '60%',
+	},
+	listContainerBig: {
+		flex: 1,
+		width: '80%',
 	},
 	list: {
 		flexGrow: 1,
