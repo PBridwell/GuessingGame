@@ -15,6 +15,7 @@ import Card from '../components/Card';
 import DefaultStyles from '../constants/default-styles';
 import MainButton from '../components/MainButton';
 import { Ionicons } from '@expo/vector-icons';
+import { ScreenOrientation } from 'expo';
 
 const generateRandomBetween = (min, max, exclude) => {
 	min = Math.ceil(min);
@@ -41,11 +42,14 @@ const GameScreen = (props) => {
 	const [pastGuesses, setPastGuesses] = useState([inititalGuess.toString()]);
 	const [detectedWidth, setDetectedWidth] = useState(Dimensions.get('window').width);
 	const [detectedHeight, setDetectedHeight] = useState(Dimensions.get('window').height);
+
 	// Logic here to create value that will survive component re-render
 	const currentLow = useRef(1);
 	const currentHigh = useRef(100);
+
 	//  destructuring here to pass into dependency array
 	const { userChoice, onGameOver } = props;
+
 	// Detect height and width on render to pass to layout conditional
 	useEffect(() => {
 		const updateLayout = () => {
@@ -91,11 +95,11 @@ const GameScreen = (props) => {
 		setPastGuesses((curPastGuesses) => [nextNumber.toString(), ...curPastGuesses]);
 	};
 
-	// let listContainerStyle = styles.listContainer;
+	let listContainerStyle = styles.listContainer;
 
-	// if (Dimensions.get('window').width < 350) {
-	// 	listContainerStyle = styles.listContainerBig;
-	// }
+	if (Dimensions.get('window').width < 350) {
+		listContainerStyle = styles.listContainerBig;
+	}
 
 	// Setting conditional for landscape screen
 	if (detectedHeight < 500) {
@@ -115,7 +119,7 @@ const GameScreen = (props) => {
 						<Ionicons name='md-add' size={24} color='white' />
 					</MainButton>
 				</View>
-				<View style={styles.listContainer}>
+				<View style={listContainerStyle}>
 					{/* <ScrollView contentContainerStyle={styles.list}>
 					{pastGuesses.map((guess, index) =>
 						renderListItem(guess, pastGuesses.length - index)
@@ -150,7 +154,7 @@ const GameScreen = (props) => {
 					<Ionicons name='md-add' size={24} color='white' />
 				</MainButton>
 			</Card>
-			<View style={styles.listContainer}>
+			<View style={listContainerStyle}>
 				{/* <ScrollView contentContainerStyle={styles.list}>
 					{pastGuesses.map((guess, index) =>
 						renderListItem(guess, pastGuesses.length - index)
